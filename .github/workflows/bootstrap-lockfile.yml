@@ -1,0 +1,38 @@
+name: Bootstrap npm lockfile
+
+on:
+  push:
+    branches:
+      - agent/fix-ci-lockfile-node22
+
+permissions:
+  contents: write
+
+jobs:
+  generate-lockfile:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/fix-ci-lockfile-node22
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: package.json
+
+      - name: Generate npm lockfile
+        run: npm install --package-lock-only --ignore-scripts
+
+      - name: Commit lockfile
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package-lock.json
+          git diff --cached --quiet && exit 0
+          git commit -m "fix(ci): add npm lockfile"
+          git push origin HEAD:agent/fix-ci-lockfile-node22
