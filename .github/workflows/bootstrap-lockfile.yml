@@ -1,9 +1,9 @@
 name: Bootstrap npm lockfile
 
 on:
-  push:
-    branches:
-      - agent/fix-ci-lockfile-node22
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
 
 permissions:
   contents: write
@@ -13,10 +13,10 @@ jobs:
     if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout branch
+      - name: Checkout PR branch
         uses: actions/checkout@v4
         with:
-          ref: agent/fix-ci-lockfile-node22
+          ref: ${{ github.head_ref }}
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -33,4 +33,4 @@ jobs:
           git add package-lock.json
           git diff --cached --quiet && exit 0
           git commit -m "fix(ci): add npm lockfile"
-          git push origin HEAD:agent/fix-ci-lockfile-node22
+          git push origin HEAD:${{ github.head_ref }}
