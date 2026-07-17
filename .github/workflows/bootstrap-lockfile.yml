@@ -22,8 +22,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-          cache-dependency-path: package.json
 
       - name: Generate npm lockfile
         run: npm install --package-lock-only --ignore-scripts
