@@ -1,4 +1,4 @@
-import type { StorybookConfig } from '@storybook/nextjs'
+import type { StorybookConfig } from '@storybook/experimental-nextjs-vite'
 
 const config: StorybookConfig = {
   stories: ['../src/**/*.stories.@(ts|tsx|mdx)'],
@@ -10,7 +10,7 @@ const config: StorybookConfig = {
     '@storybook/addon-backgrounds'
   ],
   framework: {
-    name: '@storybook/nextjs',
+    name: '@storybook/experimental-nextjs-vite',
     options: {}
   },
   docs: {
