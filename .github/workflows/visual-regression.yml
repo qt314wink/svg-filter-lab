@@ -29,14 +29,15 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: Run visual regression tests
-        run: npx playwright test --project=chromium
+        run: npm run test:visual
         env:
           CI: true
 
-      - name: Upload diff artifacts
+      - name: Upload failure evidence
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-visual-diffs
-          path: tests/visual/__snapshots__/
+          name: playwright-visual-evidence
+          path: test-results/
           retention-days: 7
+          if-no-files-found: warn
