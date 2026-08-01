@@ -6,13 +6,13 @@ permissions:
   contents: read
 jobs:
   verify:
-    uses: MelodicBloom/.github/.github/workflows/reusable-defensible-vertical-slice.yml@d6b1d5a950a2d0166e174f7ad3560dfbf0f54abb
+    uses: MelodicBloom/.github/.github/workflows/reusable-defensible-vertical-slice.yml@51d2de7b08a91cadc59a82899b25a46d78151fa2
     with:
-      node-version: "20"
+      node-version: "22"
       package-manager: npm
       profile-path: .melodicbloom/verification-profile.json
       lint-command: npm run lint
-      test-command: npm run test:visual
+      typecheck-command: npm run typecheck
+      test-command: npm run test:visual:ci
       build-command: npm run build
-      specialized-command: npm run build-storybook
       artifact-path: storybook-static
