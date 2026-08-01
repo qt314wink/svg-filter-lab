@@ -8,9 +8,15 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: bootstrap-npm-lockfile-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 jobs:
   generate-lockfile:
-    if: github.actor != 'github-actions[bot]'
+    if: >-
+      github.actor != 'github-actions[bot]' &&
+      github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     steps:
       - name: Checkout PR branch
@@ -32,5 +38,5 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add package-lock.json
           git diff --cached --quiet && exit 0
-          git commit -m "fix(ci): add npm lockfile"
+          git commit -m "fix(ci): refresh npm lockfile"
           git push origin HEAD:${{ github.head_ref }}
